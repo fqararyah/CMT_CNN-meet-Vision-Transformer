@@ -25,6 +25,8 @@ class DWCONV(nn.Module):
     """
     def __init__(self, in_channels, out_channels, stride = 1):
         super(DWCONV, self).__init__()
+        self.in_channels = in_channels
+        self.kernel_size = 3
         self.depthwise = nn.Conv2d(in_channels, out_channels, kernel_size = 3,
             stride = stride, padding = 1, groups = in_channels, bias = True
         )
@@ -140,6 +142,13 @@ class IRFFN(nn.Module):
         )
 
     def forward(self, x):
+        current_conv = self.conv1._get_item_by_idx(self.conv1.children(),0)
+        print("pw", current_conv.in_channels, x.size()[-1], x.size()[-1], current_conv.out_channels)
+        current_conv = self.dwconv._get_item_by_idx(self.dwconv.children(),0)
+        print("dw",current_conv.in_channels, x.size()[-1], x.size()[-2], current_conv.kernel_size)
+        current_conv = self.conv2._get_item_by_idx(self.conv2.children(),0)
+        print("pw", current_conv.in_channels, x.size()[-1], x.size()[-2], current_conv.out_channels)
+
         result = x + self.conv2(self.dwconv(self.conv1(x)))
         return result
 
