@@ -173,9 +173,9 @@ def export_to_onnx(model, input_shape):
 if __name__ == "__main__":
     model = CMT_S()
     summary(model, (3, 224, 224))
-    export_to_onnx(model, (1, 3, 224, 224))
-    graph = extract_graph(model, True, input_shape=(1, 3, 224, 224))
-    with open("model_dag.json", "w") as f:
+    #export_to_onnx(model, (1, 3, 224, 224))
+    graph = extract_graph(model, False, input_shape=(1, 3, 224, 224))
+    with open("model_dag_raw.json", "w") as f:
         json.dump(graph, f, indent=4)
 
     print("✅ Saved graph to mobilenet_graph_final.json")
